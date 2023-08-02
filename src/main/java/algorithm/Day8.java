@@ -1,6 +1,8 @@
 package algorithm;
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.Map;
 
 public class Day8 {
@@ -152,6 +154,61 @@ public class Day8 {
     //135. 分发糖果
     public int candy(int[] ratings) {
 
+        return 0;
+    }
+
+
+    //860. 柠檬水找零
+    public boolean lemonadeChange(int[] bills) {
+        int count_5 = 0;
+        int count_10 = 0;
+        for (int bill : bills) {
+            if (bill == 5) {
+                count_5++;
+            } else if (bill == 10) {
+                count_5--;
+                count_10++;
+            } else {
+                if (count_10 > 0) {
+                    count_10--;
+                    count_5--;
+                } else {
+                    count_5 -= 3;
+                }
+            }
+            if (count_5 < 0) return false;
+        }
+        return true;
+    }
+
+
+    //406. 根据身高重建队列
+    public int[][] reconstructQueue(int[][] people) {
+        return people;
+    }
+
+
+    //452. 用最少数量的箭引爆气球
+    public int findMinArrowShots(int[][] points) {
+        if (points.length == 0) return 0;
+        Arrays.sort(points, Comparator.comparingInt(point -> point[1]));
+        int res = 1;
+        int min_left = points[0][1];
+        for (int i = 1; i < points.length; i++) {
+            if (points[i][0] > min_left) {
+                res++;
+                min_left = points[i][1];
+            }
+        }
+        return res;
+    }
+
+
+    //435. 无重叠区间
+    public int eraseOverlapIntervals(int[][] intervals) {
+        if (intervals.length == 0) return 0;
+        Arrays.sort(intervals, Comparator.comparingInt(interval -> interval[1]));
+        
         return 0;
     }
 
