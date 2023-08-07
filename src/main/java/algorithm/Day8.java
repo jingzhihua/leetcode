@@ -292,6 +292,14 @@ public class Day8 {
 
     //968. 监控二叉树
     public int minCameraCover(TreeNode root) {
+        //find a leaf node
+        if (root.left == null && root.right == null) {
+            return 0;
+        }
+        int res = 0;
+        res += minCameraCover(root.left);
+        res += minCameraCover(root.right);
+
         return 0;
     }
 
