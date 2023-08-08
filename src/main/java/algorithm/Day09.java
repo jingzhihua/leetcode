@@ -1,6 +1,7 @@
 package algorithm;
 
-import java.util.Arrays;
+import java.net.Inet4Address;
+import java.util.*;
 
 public class Day09 {
 
@@ -89,7 +90,18 @@ public class Day09 {
 
     //343. 整数拆分
     public int integerBreak(int n) {
-        return 0;
+        if (n < 4) return n - 1;
+        int[] dp = new int[n + 1];
+        dp[0] = 0;
+        dp[1] = 0;
+        dp[2] = 1;
+        dp[3] = 2;
+        for (int i = 4; i <= n; i++) {
+            for (int j = 1; j < i; j++) {
+                dp[i] = Math.max(dp[i], Math.max(j * (i - j), j * dp[i - j]));
+            }
+        }
+        return dp[n];
     }
 //    public int integerBreak(int n) {
 //        int a = (int) Math.pow(n, 0.5);
@@ -132,13 +144,82 @@ public class Day09 {
 
     //96. 不同的二叉搜索树
     public int numTrees(int n) {
-        return 0;
+        if (n < 3) return n;
+        int[] dp = new int[n + 1];
+        dp[0] = 1;
+        dp[1] = 1;
+        dp[2] = 2;
+
+        for (int i = 3; i <= n; i++) {
+            int sum = 0;
+            for (int j = 1; j <= i; j++) {
+                int left = j - 1;
+                int right = i - j;
+                sum += dp[left] * dp[right];
+            }
+            dp[i] = sum;
+        }
+        return dp[n];
+    }
+
+
+    //416. 分割等和子集
+    public boolean canPartition(int[] nums) {
+        if (nums.length < 2) return false;
+        int sum = 0;
+        int maxNumber = 0;
+        for (int num : nums) {
+            sum += num;
+            maxNumber = Math.max(maxNumber, num);
+        }
+        int target = sum / 2;
+        if ((sum & 1) == 1 || maxNumber > target) return false;
+        int[][] dp = new int[nums.length][target + 1];
+        for (int i = 0; i < nums.length; i++) {
+            dp[i][0] = 1;
+        }
+        dp[0][nums[0]] = 1;
+
+        for (int i = 1; i < dp.length; i++) {
+            for (int j = 1; j < target + 1; j++) {
+                if (j >= nums[i])
+                    dp[i][j] = dp[i - 1][j] | dp[i - 1][j - nums[i]];
+                else
+                    dp[i][j] = dp[i - 1][j];
+            }
+        }
+        return dp[dp.length - 1][target] == 1;
+    }
+
+    //1049. 最后一块石头的重量 II
+    public int lastStoneWeightII(int[] stones) {
+        int sum = 0;
+        for (int s : stones) {
+            sum += s;
+        }
+        int target = sum / 2;
+        int[][] dp = new int[stones.length][target + 1];
+        for (int j = stones[0]; j <= target; j++) {
+            dp[0][j] = stones[0];
+        }
+        for (int i = 1; i < stones.length; i++) {
+            for (int j = 1; j <= target; j++) {
+                if (j >= stones[i]) {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - stones[i]] + stones[i]);
+                } else {
+                    dp[i][j] = dp[i - 1][j];
+                }
+            }
+        }
+        return (sum - dp[stones.length - 1][target]) - dp[stones.length - 1][target];
     }
 
 
     public static void main(String[] args) {
         Day09 day09 = new Day09();
-        System.out.println(day09.integerBreak(2));
-        System.out.println(day09.integerBreak(3));
+//        System.out.println(day09.integerBreak(2));
+//        day09.canPartition(new int[]{2, 2, 3, 5});
+        day09.lastStoneWeightII(new int[]{1, 2, 4, 8, 16, 32, 64, 12, 25, 51});
     }
+
 }
