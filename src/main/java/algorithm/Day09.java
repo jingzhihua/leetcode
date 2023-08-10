@@ -215,11 +215,73 @@ public class Day09 {
     }
 
 
+    //494.目标和
+    int res = 0;
+
+    public int findTargetSumWays(int[] nums, int target) {
+        findTargetSumWaysDFS(nums, 0, target);
+        return res;
+    }
+
+    private void findTargetSumWaysDFS(int[] nums, int index, int target) {
+        if (index >= nums.length) {
+            if (target == 0)
+                res++;
+            return;
+        }
+        findTargetSumWaysDFS(nums, index + 1, target + nums[index]);
+        findTargetSumWaysDFS(nums, index + 1, target - nums[index]);
+    }
+
+    //474. 一和零
+    public int findMaxForm(String[] strs, int m, int n) {
+        int q = strs.length;
+        int[][][] dp = new int[q + 1][m + 1][n + 1];
+        for (int i = 1; i <= q; i++) {
+            int count_0 = 0, count_1 = 0;
+            for (int j = 0; j < strs[i - 1].length(); j++) {
+                if (strs[i - 1].charAt(j) == '0') count_0++;
+                else if (strs[i - 1].charAt(j) == '1') count_1++;
+            }
+            for (int j = 0; j <= m; j++) {
+                if (count_0 > j) {
+                    for (int k = 0; k <= n; k++) {
+                        dp[i][j][k] = dp[i - 1][j][k];
+                    }
+                    continue;
+                }
+                for (int k = 0; k <= n; k++) {
+                    if (count_1 > k) dp[i][j][k] = dp[i - 1][j][k];
+                    else dp[i][j][k] = Math.max(dp[i - 1][j][k], dp[i - 1][j - count_0][k - count_1] + 1);
+                }
+            }
+        }
+        return dp[q][m][n];
+    }
+
+
+    public int wanquan(int[] weight, int[] price, int maxWeight) {
+        int[] dp = new int[maxWeight + 1];
+        for (int i = 1; i <= weight.length; i++) {
+            for (int j = weight[i]; j <= maxWeight; j++) { // 遍历背包容量
+                dp[j] = Math.max(dp[j], dp[j - weight[i]] + price[i]);
+            }
+        }
+        return dp[maxWeight];
+    }
+
+
+    //518. 零钱兑换 II
+    public int change(int amount, int[] coins) {
+        return 0;
+    }
+
+
     public static void main(String[] args) {
         Day09 day09 = new Day09();
 //        System.out.println(day09.integerBreak(2));
 //        day09.canPartition(new int[]{2, 2, 3, 5});
-        day09.lastStoneWeightII(new int[]{1, 2, 4, 8, 16, 32, 64, 12, 25, 51});
+//        day09.lastStoneWeightII(new int[]{1, 2, 4, 8, 16, 32, 64, 12, 25, 51});
     }
 
 }
