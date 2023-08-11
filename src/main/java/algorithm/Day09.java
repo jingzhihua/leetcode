@@ -263,7 +263,7 @@ public class Day09 {
     public int wanquan(int[] weight, int[] price, int maxWeight) {
         int[] dp = new int[maxWeight + 1];
         for (int i = 1; i <= weight.length; i++) {
-            for (int j = weight[i]; j <= maxWeight; j++) { // 遍历背包容量
+            for (int j = weight[i]; j <= maxWeight; j++) {
                 dp[j] = Math.max(dp[j], dp[j - weight[i]] + price[i]);
             }
         }
@@ -273,8 +273,50 @@ public class Day09 {
 
     //518. 零钱兑换 II
     public int change(int amount, int[] coins) {
-        return 0;
+        int[] dp = new int[amount + 1];
+        int n = coins.length;
+        dp[0] = 1;
+        for (int i = 0; i <= n; i++) {
+            for (int j = coins[i]; j <= amount; j++) {
+                dp[j] += dp[j - coins[i]];
+            }
+        }
+
+        return dp[amount];
     }
+
+    //377. 组合总和 Ⅳ
+    public int combinationSum4(int[] nums, int target) {
+        int[] dp = new int[target + 1];
+        dp[0] = 1;
+        for (int i = 1; i <= target; i++) {
+            for (int j = 0; j < nums.length; j++) {
+                if (i >= nums[j]) dp[i] += dp[i - nums[j]];
+            }
+        }
+        return dp[target];
+    }
+
+    //279. 完全平方数
+    public int numSquares(int n) {
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+        int m = (int) Math.pow(n, 0.5);
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (j >= i * i && dp[j - i * i] != Integer.MAX_VALUE)
+                    dp[j] = Math.min(dp[j], dp[j - i * i] + 1);
+            }
+        }
+        return dp[n];
+    }
+
+
+    //139. 单词拆分
+//    public boolean wordBreak(String s, List<String> wordDict) {
+//
+//    }
 
 
     public static void main(String[] args) {
