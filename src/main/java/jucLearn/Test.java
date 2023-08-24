@@ -4,15 +4,20 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 public class Test {
 
     public static void main(String[] args) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("a", "a");
+        ConcurrentHashMap<String, String> concurrentHashMap = new ConcurrentHashMap<>();
+        concurrentHashMap.put("a", "a");
+
 //        List<Mall> malls = List.of(new Mall("jingdong"), new Mall("taobao"), new Mall("tianmao"));
 //        String productName = "mysql";
 //
