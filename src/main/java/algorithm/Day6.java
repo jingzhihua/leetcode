@@ -255,7 +255,6 @@ public class Day6 {
                 res.add(builder.toString());
             }
             if (cur.right == null || cur.right == prev) {
-
                 prev = cur;
                 cur = null;
             } else {

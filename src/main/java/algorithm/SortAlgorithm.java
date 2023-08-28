@@ -1,7 +1,6 @@
 package algorithm;
 
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 
 public class SortAlgorithm {
 
@@ -86,15 +85,70 @@ public class SortAlgorithm {
         for (int i = 0; i < n; i++) {
             if (right >= sort_b.length) {
                 temp[i] = sort_a[left++];
-            } else if (left >= sort_a.length) {
-                temp[i] = sort_b[right++];
-            } else if (sort_a[left] > sort_b[right]) {
+            } else if (left >= sort_a.length || sort_a[left] > sort_b[right]) {
                 temp[i] = sort_b[right++];
             } else {
                 temp[i] = sort_a[left++];
             }
         }
         return temp;
+    }
+
+    //tree pre-order traversal
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) return res;
+        LinkedList<TreeNode> linkedList = new LinkedList<>();
+        linkedList.addFirst(root);
+        while (!linkedList.isEmpty()) {
+            TreeNode treeNode = linkedList.pollFirst();
+            res.add(treeNode.val);
+            if (treeNode.right != null) linkedList.addFirst(treeNode.right);
+            if (treeNode.left != null) linkedList.addFirst(treeNode.left);
+        }
+
+        return res;
+    }
+
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) return res;
+        LinkedList<TreeNode> linkedList = new LinkedList<>();
+        TreeNode p = root;
+        while (!linkedList.isEmpty() || p != null) {
+            while (p != null) {
+                linkedList.addFirst(p);
+                p = p.left;
+            }
+            p = linkedList.pollFirst();
+            res.add(p.val);
+            p = p.right;
+        }
+        return res;
+    }
+
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) return res;
+        LinkedList<TreeNode> linkedList = new LinkedList<>();
+        TreeNode p = root;
+        TreeNode last = null;
+        while (!linkedList.isEmpty() || p != null) {
+            while (p != null) {
+                linkedList.addFirst(p);
+                p = p.left;
+            }
+            p = linkedList.pollFirst();
+            if (p.right == null || p.right == last) {
+                res.add(p.val);
+                last = p;
+                p = null;
+            } else {
+                linkedList.add(p);
+                p = p.right;
+            }
+        }
+        return res;
     }
 
 
@@ -129,6 +183,25 @@ public class SortAlgorithm {
         int temp = array[i];
         array[i] = array[j];
         array[j] = temp;
+    }
+
+    public class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode() {
+        }
+
+        TreeNode(int val) {
+            this.val = val;
+        }
+
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
     }
 
 }
